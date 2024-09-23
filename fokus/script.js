@@ -22,33 +22,34 @@ function alterarContexto(contexto) {
     html.setAttribute('data-contexto', contexto)
     appImage.setAttribute('src', `/fokus/imagens/${contexto}.png`)
 
+
+
     switch (contexto) {
         case 'foco':
+            desactivatingButtons()
             btnFoco.classList.add('active')
-            btnFocoCurto.classList.remove('active')
-            btnFocoLongo.classList.remove('active')
-
             title.innerHTML = 'Otimize sua produtividade,<br><strong strong class="app__title-strong" > mergulhe no que importa.</strong >'
-
             break;
 
         case 'descanso-curto':
-            btnFoco.classList.remove('active')
+            desactivatingButtons()
             btnFocoCurto.classList.add('active')
-            btnFocoLongo.classList.remove('active')
-
             title.innerHTML = 'Que tal dar uma respirada?<br><strong class="app__title-strong">Faça uma pausa curta!</strong>'
-
             break;
 
         case 'descanso-longo':
-            btnFoco.classList.remove('active')
-            btnFocoCurto.classList.remove('active')
+            desactivatingButtons()
             btnFocoLongo.classList.add('active')
-
             title.innerHTML = 'Hora de voltar à superfície.<br><strong class="app__title-strong">Faça uma pausa longa.</strong>'
-
             break;
     }
-}
 
+
+
+    function desactivatingButtons() {
+        const btnsCardContext = document.querySelectorAll('.app__card-button')
+        btnsCardContext.forEach(element => {
+            element.classList.remove('active')
+        });
+    }
+}

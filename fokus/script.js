@@ -7,15 +7,15 @@ const titulo = document.querySelector('.app__title')
 const botoes = document.querySelectorAll('.app__card-button')
 const startPauseBt = document.querySelector('#start-pause')
 const musicaFocoInput = document.querySelector('#alternar-musica')
-const musica = new Audio('/sons/luna-rise-part-one.mp3')
-const audioPlay = new Audio('/sons/play.wav');
-const audioPausa = new Audio('/sons/pause.mp3');
+const musica = new Audio('/fokus/sons/luna-rise-part-one.mp3')
+const audioPlay = new Audio('/fokus/sons/play.wav');
+const audioPausa = new Audio('/fokus/sons/pause.mp3');
 const audioTempoFinalizado = new Audio('./sons/beep.mp3');
 const iniciarOuPausarBt = document.querySelector('#start-pause span')
 
 const timer = document.querySelector('#timer')
 
-let tempoDecorridoEmSegundos = 5
+let tempoDecorridoEmSegundos = 120
 let intervaloId = null
 
 musica.loop = true
@@ -48,7 +48,7 @@ function alterarContexto(contexto) {
         contexto.classList.remove('active')
     })
     html.setAttribute('data-contexto', contexto)
-    banner.setAttribute('src', `/imagens/${contexto}.png`)
+    banner.setAttribute('src', `/fokus/imagens/${contexto}.png`)
     switch (contexto) {
         case "foco":
             titulo.innerHTML = `
@@ -80,28 +80,37 @@ const contagemRegressiva = () => {
     tempoDecorridoEmSegundos -= 1
     mostrarTempo()
     console.log('Temporizador: ' + tempoDecorridoEmSegundos)
-    iniciarOuPausarBt.textContent = "<strong>Pausar</strong>"
+    iniciarOuPausarBt.textContent = "Pausar"
 }
 
 startPauseBt.addEventListener('click', iniciarOuPausar)
 
 function mostrarTempo() {
-    const tempo = tempoDecorridoEmSegundos
-    timer.innerHTML = tempoDecorridoEmSegundos
+    const tempo = new Date(tempoDecorridoEmSegundos * 1000)
+    const tempoFormatado = tempo.toLocaleTimeString('pt-Br', { minute: '2-digit', second: '2-digit' })
+    timer.innerHTML = `${tempoFormatado}`
 }
 
 function iniciarOuPausar() {
     if (intervaloId) {
+        chanceIconButton('play_arrow')
         audioPausa.play()
         zerar()
         return
     }
     audioPlay.play()
     intervaloId = setInterval(contagemRegressiva, 1000)
+    chanceIconButton('pause')
+
 }
 
 function zerar() {
     clearInterval(intervaloId)
-    iniciarOuPausarBt.textContent = "<strong>Começar</strong>"
+    iniciarOuPausarBt.textContent = "Começar"
     intervaloId = null
+}
+
+function chanceIconButton(value) {
+    const btnIcon = document.querySelector(".app__card-primary-butto-icon")
+    btnIcon.setAttribute('src', `/fokus/imagens/${value}.png`)
 }
